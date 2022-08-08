@@ -20,6 +20,7 @@ alias open-docker="open -a Docker"
 alias close-docker="pkill -SIGHUP -f /Applications/Docker.app 'docker serve'"
 alias vim="nvim"
 alias vi="nvim"
+alias dot='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 
 # Java versions
 # export JAVA_HOME=/Users/benpearo/Library/Java/JavaVirtualMachines/openjdk-17.0.2/Contents/Home
