@@ -13,9 +13,9 @@ plugins=(git colored-man-pages colorize pip python brew macos zsh-autosuggestion
 source $ZSH/oh-my-zsh.sh
 
 # Aliases
-alias build-branch="/Users/benpearo/scripts/build-branch.sh"
-alias build-branch-minimal="/Users/benpearo/scripts/build-branch-minimal.sh"
-alias build-supporting="/Users/benpearo/scripts/docker-supporting.sh"
+alias build-branch="/Users/benpearo/.local/bin/build-branch.sh"
+alias build-branch-minimal="/Users/benpearo/.local/bin/build-branch-minimal.sh"
+alias build-supporting="/Users/benpearo/.local/bin/docker-supporting.sh"
 alias open-docker="open -a Docker"
 alias close-docker="pkill -SIGHUP -f /Applications/Docker.app 'docker serve'"
 alias vim="nvim"
