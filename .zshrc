@@ -8,7 +8,7 @@ zstyle ':omz:update' frequency 7
 
 COMPLETION_WAITING_DOTS="true"
 
-plugins=(git colored-man-pages colorize pip python brew macos zsh-autosuggestions)
+plugins=(git colored-man-pages colorize pip python brew macos zsh-autosuggestions fzf-zsh-plugin)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -22,6 +22,7 @@ alias vim="nvim"
 alias vi="nvim"
 alias dot='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias doc='docker compose'
+alias cat='bat'
 
 # Java versions
 # export JAVA_HOME=/Users/benpearo/Library/Java/JavaVirtualMachines/openjdk-17.0.2/Contents/Home
