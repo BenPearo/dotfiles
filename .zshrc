@@ -41,6 +41,9 @@ export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 export PATH=$PATH:./nvim-macos/bin/nvim
 
+# FZF exports
+export FZF_DEFAULT_COMMAND="find . -type d \( -name .git -o -name node_modules \) -prune -o -print"
+
 # TODO: What is this
 # The following lines were added by compinstall
 zstyle :compinstall filename '/Users/benpearo/.zshrc'
