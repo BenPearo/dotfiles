@@ -2,7 +2,7 @@
 export ZSH="/Users/benpearo/.oh-my-zsh"
 
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="robbyrussell-no-git"
 
 zstyle ':omz:update' frequency 7
 
@@ -23,6 +23,7 @@ alias vi="nvim"
 alias dot='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias doc='docker compose'
 alias cat='bat'
+alias logs='/Users/benpearo/.local/bin/logs.sh'
 
 # Java versions
 # export JAVA_HOME=/Users/benpearo/Library/Java/JavaVirtualMachines/openjdk-17.0.2/Contents/Home
@@ -56,3 +57,9 @@ compinit
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/benpearo/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/benpearo/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/benpearo/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/benpearo/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
