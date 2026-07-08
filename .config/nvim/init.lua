@@ -43,6 +43,16 @@ require('packer').startup(function(use)
     after = 'nvim-treesitter',
   }
 
+  -- Key Legend
+  use {
+    'folke/which-key.nvim',
+    config = function() 
+      require('which-key').setup({
+        delay = 3000,
+      })
+    end,
+  }
+
   -- Git related plugins
   use 'tpope/vim-fugitive'
   use 'tpope/vim-rhubarb'

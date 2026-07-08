@@ -1,6 +1,11 @@
 return function(use)
   use 'mbbill/undotree'
-  use 'theprimeagen/harpoon'
+  use "nvim-lua/plenary.nvim"
+  use {
+      "ThePrimeagen/harpoon",
+      branch = "harpoon2",
+      requires = { {"nvim-lua/plenary.nvim"} }
+  }  
   use 'tpope/vim-surround'
   use {
     'm-demare/hlargs.nvim',
