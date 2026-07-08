@@ -1,0 +1,50 @@
+# herdr configuration
+# ~/.config/herdr/config.toml
+
+[theme]
+name = "catppuccin"
+
+[terminal]
+new_cwd = "follow"
+
+[keys]
+prefix = "ctrl+a"
+
+# Jump to pinned project workspaces (mirrors tmux H/W/E sessionizer bindings)
+[[keys.command]]
+key = "prefix+H"
+type = "shell"
+command = "~/.local/bin/herdr-sessionizer.sh ~/"
+description = "Jump to home workspace"
+
+[[keys.command]]
+key = "prefix+W"
+type = "shell"
+command = "~/.local/bin/herdr-sessionizer.sh ~/Projects/mt-server/"
+description = "Jump to mt-server workspace"
+
+[[keys.command]]
+key = "prefix+E"
+type = "shell"
+command = "~/.local/bin/herdr-sessionizer.sh ~/Projects/web-client/"
+description = "Jump to web-client workspace"
+
+# Interactive fzf project picker (mirrors tmux `f` binding)
+[[keys.command]]
+key = "prefix+f"
+type = "pane"
+command = "~/.local/bin/herdr-sessionizer.sh"
+description = "fzf project picker"
+
+# Open TODO.md in nvim from current pane's directory (mirrors tmux `D` binding)
+[[keys.command]]
+key = "prefix+D"
+type = "pane"
+command = "bash -c '[[ -e \"$HERDR_ACTIVE_PANE_CWD/TODO.md\" ]] && nvim \"$HERDR_ACTIVE_PANE_CWD/TODO.md\" || nvim ~/todo.md'"
+description = "Open TODO.md in nvim"
+
+[session]
+resume_agents_on_restore = true
+
+[experimental]
+pane_history = true
