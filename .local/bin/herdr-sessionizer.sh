@@ -14,7 +14,7 @@ selected_name=$(basename "$selected" | tr . _)
 
 # Find existing workspace by label
 workspace_id=$(herdr workspace list 2>/dev/null \
-    | jq -r --arg name "$selected_name" '.workspaces[] | select(.label == $name) | .workspace_id' 2>/dev/null \
+    | jq -r --arg name "$selected_name" '.result.workspaces[] | select(.label == $name) | .workspace_id' 2>/dev/null \
     | head -1)
 
 if [[ -n $workspace_id ]]; then
