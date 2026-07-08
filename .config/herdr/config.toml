@@ -4,11 +4,14 @@
 [theme]
 name = "catppuccin"
 
+auto_switch = false
 [terminal]
 new_cwd = "follow"
 
 [keys]
 prefix = "ctrl+a"
+navigate_workspace_up = "k"
+navigate_workspace_down = "j"
 
 # Jump to pinned project workspaces (mirrors tmux H/W/E sessionizer bindings)
 [[keys.command]]
@@ -48,3 +51,6 @@ resume_agents_on_restore = true
 
 [experimental]
 pane_history = true
+
+[ui]
+show_agent_labels_on_pane_borders = true
