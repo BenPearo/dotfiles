@@ -209,10 +209,11 @@ Herdr is a terminal workspace manager with AI agent integration. The configurati
 ### Settings
 
 - **Prefix:** `C-a` — matches tmux prefix
-- **Theme:** catppuccin
+- **Theme:** catppuccin (`auto_switch = false` — no automatic light/dark switching)
 - `new_cwd = "follow"` — new panes inherit the current directory
 - `pane_history = true` — pane contents preserved across server restarts
 - `resume_agents_on_restore = true` — AI agent sessions restored after restart
+- `show_agent_labels_on_pane_borders = true` — agent name shown in split pane borders
 
 ### Keybindings
 
@@ -225,18 +226,22 @@ All bindings use `C-a` as prefix, matching tmux.
 | `C-a E` | shell | Switch to or create a workspace rooted at `~/Projects/web-client/` |
 | `C-a f` | pane | Interactive fzf project picker |
 | `C-a D` | pane | Open `TODO.md` in current pane's directory (falls back to `~/todo.md`) in nvim |
+| `j` / `k` | navigate | Move down / up in the workspace list (navigate mode) |
 
 `shell` type runs detached in the background (no visible pane). `pane` type opens a temporary pane that closes when the command exits.
 
 ### Sessionizer (`~/.local/bin/herdr-sessionizer.sh`)
 
-Herdr-native replacement for `tmux-sessionizer.sh`. Same project-picking logic but uses `herdr workspace` commands instead of `tmux` commands:
+Herdr-native replacement for `tmux-sessionizer.sh`. Same project-picking logic but uses `herdr workspace` commands instead of `tmux` commands.
 
-- Checks if a workspace with the derived label already exists via `herdr workspace list`
-- If yes: calls `herdr workspace focus <id>` to switch to it
-- If no: calls `herdr workspace create --cwd <path> --label <name> --focus` to create and switch
+Workspace labels use `basename` of the directory with dots replaced by underscores. Exception: the home directory (`~`) is always labeled `~`.
 
-The workspace label is derived the same way as the tmux session name: `basename` of the directory with dots replaced by underscores.
+**Fast path (cached):** workspace IDs are stored in `~/.cache/herdr-sessionizer/<label>` on first use. Subsequent calls to pinned bindings (H/W/E) skip `herdr workspace list` entirely and call `herdr workspace focus <id>` directly — one socket call. Stale cache entries (closed workspaces) are detected and auto-cleared.
+
+**Slow path (first use or stale cache):**
+- Calls `herdr workspace list` and finds the workspace by label
+- If found: focuses it and writes the ID to cache
+- If not found: calls `herdr workspace create --cwd <path> --label <name> --focus` and caches the new ID
 
 ---
 
