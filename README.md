@@ -227,6 +227,7 @@ All bindings use `C-a` as prefix, matching tmux.
 | `C-a f` | pane | Interactive fzf project picker |
 | `C-a D` | pane | Open `TODO.md` in current pane's directory (falls back to `~/todo.md`) in nvim |
 | `j` / `k` | navigate | Move down / up in the workspace list (navigate mode) |
+| `C-a S` | — | Toggle sidebar |
 
 `shell` type runs detached in the background (no visible pane). `pane` type opens a temporary pane that closes when the command exits.
 
@@ -276,6 +277,12 @@ Additional config files are sourced from `~/.config/zsh/modules/*.zsh` (not trac
 | [mise](https://mise.jdx.dev/) | Runtime version manager (replaces nvm, rbenv, etc.) |
 | [zoxide](https://github.com/ajeetdsouza/zoxide) | Smart `cd` — jumps to frecently used directories |
 | fzf | Fuzzy finder; default command excludes `.git` and `node_modules` |
+
+### Key bindings
+
+| Key | Action |
+|---|---|
+| `opt+delete` | Delete word backward (backward-kill-word) |
 
 ### PATH additions (in order)
 

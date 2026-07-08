@@ -12,6 +12,7 @@ new_cwd = "follow"
 prefix = "ctrl+a"
 navigate_workspace_up = "k"
 navigate_workspace_down = "j"
+toggle_sidebar = "prefix+S"
 
 # Jump to pinned project workspaces (mirrors tmux H/W/E sessionizer bindings)
 [[keys.command]]
