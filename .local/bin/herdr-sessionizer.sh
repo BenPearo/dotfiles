@@ -11,6 +11,9 @@ if [[ -z $selected ]]; then
 fi
 
 selected_name=$(basename "$selected" | tr . _)
+if [[ "$selected" == "$HOME" || "$selected" == "$HOME/" ]]; then
+    selected_name="~"
+fi
 
 # Find existing workspace by label
 workspace_id=$(herdr workspace list 2>/dev/null \
