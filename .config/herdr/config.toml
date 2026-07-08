@@ -40,6 +40,13 @@ type = "pane"
 command = "~/.local/bin/herdr-sessionizer.sh"
 description = "fzf project picker"
 
+# Cycle through blocked agents
+[[keys.command]]
+key = "prefix+b"
+type = "shell"
+command = "~/.local/bin/herdr-focus-blocked.sh"
+description = "Cycle blocked agents"
+
 # Open TODO.md in nvim from current pane's directory (mirrors tmux `D` binding)
 [[keys.command]]
 key = "prefix+D"
