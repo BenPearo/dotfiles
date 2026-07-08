@@ -63,6 +63,3 @@ esac
 # pnpm end
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/Library/Python/3.9/bin:$PATH"
-
-# opt+delete = delete word backward (fixes behaviour inside terminal multiplexers)
-bindkey '\e\x7f' backward-kill-word

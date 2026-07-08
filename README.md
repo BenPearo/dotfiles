@@ -278,12 +278,6 @@ Additional config files are sourced from `~/.config/zsh/modules/*.zsh` (not trac
 | [zoxide](https://github.com/ajeetdsouza/zoxide) | Smart `cd` — jumps to frecently used directories |
 | fzf | Fuzzy finder; default command excludes `.git` and `node_modules` |
 
-### Key bindings
-
-| Key | Action |
-|---|---|
-| `opt+delete` | Delete word backward (backward-kill-word) |
-
 ### PATH additions (in order)
 
 ```
