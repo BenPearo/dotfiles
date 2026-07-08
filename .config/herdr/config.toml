@@ -47,6 +47,10 @@ type = "pane"
 command = "bash -c '[[ -e \"$HERDR_ACTIVE_PANE_CWD/TODO.md\" ]] && nvim \"$HERDR_ACTIVE_PANE_CWD/TODO.md\" || nvim ~/todo.md'"
 description = "Open TODO.md in nvim"
 
+[keys.indexed]
+workspaces = "ctrl+shift"
+agents = "ctrl"
+
 [session]
 resume_agents_on_restore = true
 
