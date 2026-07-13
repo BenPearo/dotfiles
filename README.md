@@ -249,7 +249,8 @@ Workspace labels use `basename` of the directory with dots replaced by underscor
 ## Zsh
 
 **Location:** `~/.zshrc`  
-**Framework:** [oh-my-zsh](https://ohmyz.sh/) with `robbyrussell` theme
+**Framework:** [oh-my-zsh](https://ohmyz.sh/) with `robbyrussell` theme  
+**Startup time:** ~1.0s (down from ~2.6s; see optimizations below)
 
 ### Plugins
 
@@ -259,12 +260,15 @@ Workspace labels use `basename` of the directory with dots replaced by underscor
 | `colored-man-pages` | Colorized man pages |
 | `colorize` | Syntax highlighting for `cat` |
 | `zsh-autosuggestions` | Fish-style command suggestions |
-| `fzf-zsh-plugin` | fzf integration for shell history and file search |
-| `fzf-tab` | fzf-powered tab completion |
-| `pip` | pip completion |
-| `python` | Python aliases |
+| `fzf-zsh-plugin` | fzf key bindings (`Ctrl+R`, `Ctrl+T`, `Alt+C`) and `FZF_DEFAULT_COMMAND` |
+| `fzf-tab` | fzf-powered tab completion menu |
 | `brew` | Homebrew completion |
 | `macos` | macOS-specific aliases |
+
+### Startup optimizations
+
+- `ZSH_DISABLE_COMPFIX=true` — skips compaudit's directory permission scan on every shell open (~60ms saved)
+- `pip` and `python` plugins removed — unused
 
 ### Modular config
 

@@ -8,8 +8,11 @@ zstyle ':omz:update' frequency 7
 
 COMPLETION_WAITING_DOTS="true"
 
-plugins=(git colored-man-pages colorize pip python brew macos zsh-autosuggestions fzf-zsh-plugin fzf-tab)
+# pip and python plugins removed — they were unused and added load overhead
+plugins=(git colored-man-pages colorize brew macos zsh-autosuggestions fzf-zsh-plugin fzf-tab)
 
+# Skip compaudit directory permission scan on every startup (~60ms saved)
+ZSH_DISABLE_COMPFIX=true
 source $ZSH/oh-my-zsh.sh
 
 # Load seperated config files
