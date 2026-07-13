@@ -249,44 +249,75 @@ Workspace labels use `basename` of the directory with dots replaced by underscor
 ## Zsh
 
 **Location:** `~/.zshrc`  
-**Framework:** [oh-my-zsh](https://ohmyz.sh/) with `robbyrussell` theme  
-**Startup time:** ~1.0s (down from ~2.6s; see optimizations below)
+**Plugin manager:** [Zinit](https://github.com/zdharma-continuum/zinit)  
+**Theme:** `robbyrussell` (via OMZ snippet)  
+**Startup time:** ~0.5s (down from ~2.6s with plain oh-my-zsh)
+
+### Bootstrap
+
+Zinit must be installed before the first shell open:
+
+```sh
+git clone --template="" https://github.com/zdharma-continuum/zinit.git \
+  ~/.local/share/zinit/zinit.git
+```
+
+On first launch Zinit downloads all GitHub-sourced plugins automatically.
 
 ### Plugins
 
-| Plugin | Purpose |
+Plugins are split into two groups. **Eager** plugins load synchronously at startup because the prompt or shell behaviour depends on them. **Deferred** plugins load asynchronously after the first prompt with `wait lucid` — they're available before the first keypress but don't delay the prompt appearing.
+
+**Eager (OMZ lib snippets):**
+
+| Snippet | Purpose |
 |---|---|
-| `git` | Git aliases and prompt info |
-| `colored-man-pages` | Colorized man pages |
-| `colorize` | Syntax highlighting for `cat` |
-| `zsh-autosuggestions` | Fish-style command suggestions |
-| `fzf-zsh-plugin` | fzf key bindings (`Ctrl+R`, `Ctrl+T`, `Alt+C`) and `FZF_DEFAULT_COMMAND` |
-| `fzf-tab` | fzf-powered tab completion menu |
-| `brew` | Homebrew completion |
-| `macos` | macOS-specific aliases |
+| `OMZL::functions.zsh` | Core OMZ utility functions |
+| `OMZL::async_prompt.zsh` | Async prompt handler (`_omz_register_handler`) |
+| `OMZL::git.zsh` | Git prompt info (`git_prompt_info`) |
+| `OMZL::theme-and-appearance.zsh` | Color variables (`$fg`, `$reset_color`) |
+| `OMZL::completion.zsh` | Completion options and zstyles |
+| `OMZL::history.zsh` | History size, dedup, sharing settings |
+| `OMZL::key-bindings.zsh` | Home/End/Delete keys, arrow history search |
+| `OMZL::termsupport.zsh` | Terminal title and tab name |
+| `OMZT::robbyrussell` | Prompt theme |
 
-### Startup optimizations
+**Deferred (load after first prompt):**
 
-- `ZSH_DISABLE_COMPFIX=true` — skips compaudit's directory permission scan on every shell open (~60ms saved)
-- `pip` and `python` plugins removed — unused
+| Plugin | Source | Purpose |
+|---|---|---|
+| `OMZP::git` | OMZ snippet | Git aliases |
+| `OMZP::colored-man-pages` | OMZ snippet | Colorized man pages |
+| `OMZP::colorize` | OMZ snippet | Syntax highlighting for `cat` |
+| `OMZP::brew` | OMZ snippet | Homebrew completion |
+| `zsh-autosuggestions` | GitHub | Fish-style command suggestions |
+| `fzf-tab` | GitHub | fzf-powered tab completion menu |
+| `fzf-zsh-plugin` | GitHub | fzf key bindings (`Ctrl+R`, `Ctrl+T`, `Alt+C`) |
+
+`fzf-tab` uses `zicompinit -C` to initialise completions from a cached dump, avoiding a full `compinit` rescan on every shell open.
 
 ### Modular config
 
-Additional config files are sourced from `~/.config/zsh/modules/*.zsh` (not tracked in this repo).
+`~/.config/zsh/modules/*.zsh` is sourced at startup. Currently tracked:
+
+| File | Contents |
+|---|---|
+| `aliases.zsh` | Shell aliases (git shortcuts, tool remaps, convenience) |
 
 ### Tools
 
 | Tool | Purpose |
 |---|---|
-| [mise](https://mise.jdx.dev/) | Runtime version manager (replaces nvm, rbenv, etc.) |
+| [mise](https://mise.jdx.dev/) | Runtime version manager (node, python, etc.) |
 | [zoxide](https://github.com/ajeetdsouza/zoxide) | Smart `cd` — jumps to frecently used directories |
 | fzf | Fuzzy finder; default command excludes `.git` and `node_modules` |
 
-### PATH additions (in order)
+### PATH (highest to lowest priority)
 
 ```
-~/.local/bin           Scripts (sessionizers, mise, etc.)
 ~/Library/Python/3.9/bin
-$PNPM_HOME             pnpm global binaries
-$ANDROID_HOME/...      Android SDK tools
+~/.local/bin              Scripts (sessionizers, etc.)
+$PNPM_HOME                pnpm global binaries
+/usr/local/opt/node@10/bin
+$ANDROID_HOME/...         Android SDK tools
 ```

@@ -1,68 +1,69 @@
-# Path to your oh-my-zsh installation.
-export ZSH="${HOME}/.oh-my-zsh"
+# Zinit plugin manager
+ZINIT_HOME="${HOME}/.local/share/zinit/zinit.git"
+source "${ZINIT_HOME}/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
-
-zstyle ':omz:update' frequency 7
-
+# OMZ lib snippets — needed at startup for theme and shell behaviour
 COMPLETION_WAITING_DOTS="true"
+export ZSH_CACHE_DIR="${HOME}/.cache/zsh"
+mkdir -p "$ZSH_CACHE_DIR"
+zinit snippet OMZL::functions.zsh
+zinit snippet OMZL::async_prompt.zsh
+zinit snippet OMZL::git.zsh
+zinit snippet OMZL::theme-and-appearance.zsh
+zinit snippet OMZL::completion.zsh
+zinit snippet OMZL::history.zsh
+zinit snippet OMZL::key-bindings.zsh
+zinit snippet OMZL::termsupport.zsh
 
-# pip and python plugins removed — they were unused and added load overhead
-plugins=(git colored-man-pages colorize brew macos zsh-autosuggestions fzf-zsh-plugin fzf-tab)
+# Theme — eager so the first prompt renders correctly
+zinit snippet OMZT::robbyrussell
 
-# Skip compaudit directory permission scan on every startup (~60ms saved)
-ZSH_DISABLE_COMPFIX=true
-source $ZSH/oh-my-zsh.sh
+# Plugins deferred until after first prompt
+zinit ice wait lucid; zinit snippet OMZP::git
+zinit ice wait lucid; zinit snippet OMZP::colored-man-pages
+zinit ice wait lucid; zinit snippet OMZP::colorize
+zinit ice wait lucid; zinit snippet OMZP::brew
 
-# Load seperated config files
-for conf in "$HOME/.config/zsh/modules/"*.zsh; do
-  source "${conf}"
-done
+zinit ice wait lucid atload"_zsh_autosuggest_start"
+zinit light zsh-users/zsh-autosuggestions
+
+# fzf-tab — zicompinit runs compinit (cached with -C) then replays buffered compdef calls
+zinit ice wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay"
+zinit light Aloxaf/fzf-tab
+
+# fzf key bindings: Ctrl+R history, Ctrl+T file picker, Alt+C dir jump
+zinit ice wait lucid
+zinit light unixorn/fzf-zsh-plugin
+
+# Modular config files
+for conf in "$HOME/.config/zsh/modules/"*.zsh; do source "${conf}"; done
 unset conf
 
-# TODO: What is this
-
+# PATH
 export PATH="/usr/local/opt/node@10/bin:$PATH"
-
-# Android paths
 export ANDROID_HOME=$HOME/Library/Android/sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/tools/bin
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-export PATH=$PATH:./nvim-macos/bin/nvim
+export PATH=$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools
 
-# FZF exports
 export FZF_DEFAULT_COMMAND="find . -type d \( -name .git -o -name node_modules \) -prune -o -print"
 
-# TODO: What is this
-# The following lines were added by compinstall
-zstyle :compinstall filename '${HOME}/.zshrc'
+# Google Cloud SDK
+if [[ -f "${HOME}/Downloads/google-cloud-sdk/path.zsh.inc" ]]; then
+  source "${HOME}/Downloads/google-cloud-sdk/path.zsh.inc"
+fi
+if [[ -f "${HOME}/Downloads/google-cloud-sdk/completion.zsh.inc" ]]; then
+  source "${HOME}/Downloads/google-cloud-sdk/completion.zsh.inc"
+fi
 
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '${HOME}/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/benpearo/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '${HOME}/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/benpearo/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-
-eval "$(~/.local/bin/mise activate zsh)"
+eval "$(${HOME}/.local/bin/mise activate zsh)"
 eval "$(zoxide init zsh)"
 
-# export NVM_DIR="$HOME/.nvm"
-#   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-#   [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
 # pnpm
-export PNPM_HOME="/Users/bpearo@venacorp.com/Library/pnpm"
+export PNPM_HOME="${HOME}/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-# pnpm end
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/Library/Python/3.9/bin:$PATH"
