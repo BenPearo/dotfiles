@@ -33,6 +33,8 @@ require('packer').startup(function(use)
 
   use { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    -- `main` is an incompatible rewrite (no nvim-treesitter.configs); this config uses the master API
+    branch = 'master',
     run = function()
       pcall(require('nvim-treesitter.install').update { with_sync = true })
     end,
@@ -40,6 +42,7 @@ require('packer').startup(function(use)
 
   use { -- Additional text objects via treesitter
     'nvim-treesitter/nvim-treesitter-textobjects',
+    branch = 'master',
     after = 'nvim-treesitter',
   }
 

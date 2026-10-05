@@ -56,6 +56,9 @@ brew install neovim tmux fzf zoxide
 # mise — must live at ~/.local/bin/mise (that's the path .zshrc calls)
 curl -fsSL https://mise.run | MISE_INSTALL_PATH="$HOME/.local/bin/mise" sh
 
+# Node — Mason needs npm to install the TypeScript LSP (ts_ls)
+"$HOME/.local/bin/mise" use -g node@lts
+
 # TPM (tmux plugin manager)
 git clone https://github.com/tmux-plugins/tpm "$HOME/.config/tmux/plugins/tpm"
 ```
