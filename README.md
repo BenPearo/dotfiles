@@ -51,7 +51,7 @@ git clone --template="" https://github.com/zdharma-continuum/zinit.git \
   "$HOME/.local/share/zinit/zinit.git"
 
 # CLI tools
-brew install neovim tmux fzf zoxide
+brew install neovim tmux fzf zoxide herdr
 
 # mise — must live at ~/.local/bin/mise (that's the path .zshrc calls)
 curl -fsSL https://mise.run | MISE_INSTALL_PATH="$HOME/.local/bin/mise" sh
@@ -62,8 +62,6 @@ curl -fsSL https://mise.run | MISE_INSTALL_PATH="$HOME/.local/bin/mise" sh
 # TPM (tmux plugin manager)
 git clone https://github.com/tmux-plugins/tpm "$HOME/.config/tmux/plugins/tpm"
 ```
-
-[Herdr](#herdr) is optional and installed separately.
 
 ### 4. First launch
 
