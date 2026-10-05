@@ -4,16 +4,79 @@ Terminal configuration managed as a bare git repository.
 
 ## Bootstrap on a new machine
 
-```bash
-git clone --bare <repo-url> ~/dotfiles/
-git --git-dir=~/dotfiles/ --work-tree=~ checkout
-git --git-dir=~/dotfiles/ --work-tree=~ config status.showUntrackedFiles no
+Run these steps in order, in a zsh terminal, on macOS. Each block can be pasted as-is.
+
+> **Use `$HOME`, not `~`.** zsh does not expand `~` after `=`, so
+> `--git-dir=~/dotfiles` fails with `fatal: not a git repository: '~/dotfiles/'`.
+
+### 1. Prerequisites
+
+Install [Homebrew](https://brew.sh) (this also installs the Xcode command line tools: `git`, `make`, a C compiler). Homebrew's installer tells you to add a `brew shellenv` line to `~/.zprofile` — do it, since `~/.zprofile` is **not** tracked in this repo:
+
+```zsh
+echo 'eval "$(/opt/homebrew/bin/brew shellenv zsh)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv zsh)"
 ```
 
-Add an alias to your shell so you can run `dotfiles <git-command>` from anywhere:
+### 2. Clone and check out the dotfiles
 
-```bash
-alias dotfiles='git --git-dir=~/dotfiles/ --work-tree=~'
+```zsh
+# Use https://github.com/BenPearo/dotfiles.git if SSH keys aren't set up yet
+git clone --bare git@github.com:BenPearo/dotfiles.git "$HOME/dotfiles"
+
+# Temporary helper for this terminal (the permanent `dot` alias arrives with the checkout)
+dot() { git --git-dir="$HOME/dotfiles" --work-tree="$HOME" "$@"; }
+
+# Move any existing files that would block checkout (e.g. a default ~/.zshrc) into ~/.dotfiles-backup
+dot ls-tree -r --name-only HEAD | while read -r f; do
+  if [ -e "$HOME/$f" ]; then
+    mkdir -p "$HOME/.dotfiles-backup/$(dirname "$f")"
+    mv "$HOME/$f" "$HOME/.dotfiles-backup/$f"
+  fi
+done
+
+dot checkout
+dot config status.showUntrackedFiles no
+```
+
+Afterwards, check `~/.dotfiles-backup` for anything worth merging back, then delete it.
+
+### 3. Install tools
+
+`.zshrc` runs `~/.local/bin/mise` and `zoxide` on every shell start, so these **must** be installed before opening a new terminal or every shell prints errors.
+
+```zsh
+# Zinit (zsh plugin manager)
+git clone --template="" https://github.com/zdharma-continuum/zinit.git \
+  "$HOME/.local/share/zinit/zinit.git"
+
+# CLI tools
+brew install neovim tmux fzf zoxide
+
+# mise — must live at ~/.local/bin/mise (that's the path .zshrc calls)
+curl -fsSL https://mise.run | MISE_INSTALL_PATH="$HOME/.local/bin/mise" sh
+
+# TPM (tmux plugin manager)
+git clone https://github.com/tmux-plugins/tpm "$HOME/.config/tmux/plugins/tpm"
+```
+
+[Herdr](#herdr) is optional and installed separately.
+
+### 4. First launch
+
+1. **Open a new terminal.** The first shell takes ~30s while Zinit downloads its plugins; later shells start in ~0.5s.
+2. **Run `nvim`.** Packer bootstraps and installs all plugins; quit and reopen once it finishes. Mason then installs the LSP servers.
+3. **Start `tmux`** and press `C-a I` (prefix, then capital I) to install tmux plugins.
+
+### Managing the dotfiles
+
+`~/.config/zsh/modules/aliases.zsh` defines `dot` as git for this repo, usable from any directory:
+
+```zsh
+dot status
+dot add ~/.config/nvim/init.lua
+dot commit -m "..."
+dot push
 ```
 
 ---
@@ -255,14 +318,7 @@ Workspace labels use `basename` of the directory with dots replaced by underscor
 
 ### Bootstrap
 
-Zinit must be installed before the first shell open:
-
-```sh
-git clone --template="" https://github.com/zdharma-continuum/zinit.git \
-  ~/.local/share/zinit/zinit.git
-```
-
-On first launch Zinit downloads all GitHub-sourced plugins automatically.
+Zinit is installed in [step 3 of the bootstrap](#3-install-tools). On first launch Zinit downloads all GitHub-sourced plugins automatically.
 
 ### Plugins
 
